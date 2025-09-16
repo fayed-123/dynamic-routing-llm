@@ -1,0 +1,535 @@
+{
+  "evaluation_timestamp": "20250916_141934",
+  "analysis": {
+    "evaluation_summary": {
+      "total_queries_evaluated": 5,
+      "successful_queries": 5,
+      "success_rate": 1.0,
+      "cache_hits": 0,
+      "cache_hit_rate": 0.0,
+      "fallback_triggers": 0,
+      "fallback_rate": 0.0,
+      "total_processing_time": 11.03837537765503,
+      "average_processing_time": 2.207675075531006,
+      "total_resource_cost": 18,
+      "average_resource_cost": 3.6
+    },
+    "performance_metrics": {
+      "processing_time_stats": {
+        "mean": 2.205782890319824,
+        "median": 1.606978178024292,
+        "std_dev": 2.435143167159765,
+        "min": 0.3585197925567627,
+        "max": 6.3439226150512695
+      },
+      "resource_cost_stats": {
+        "mean": 3.6,
+        "median": 3,
+        "std_dev": 3.7148351242013424,
+        "min": 1,
+        "max": 10
+      }
+    },
+    "classification_analysis": {
+      "overall_accuracy": 0.6,
+      "classification_breakdown": {
+        "simple": {
+          "expected_count": 3,
+          "correct_count": 2,
+          "accuracy": 0.6666666666666666
+        },
+        "medium": {
+          "expected_count": 2,
+          "correct_count": 1,
+          "accuracy": 0.5
+        },
+        "advanced": {
+          "expected_count": 0,
+          "correct_count": 0,
+          "accuracy": 0.0
+        }
+      },
+      "confusion_matrix": {
+        "simple": {
+          "simple": 2,
+          "medium": 1,
+          "advanced": 0
+        },
+        "medium": {
+          "simple": 0,
+          "medium": 1,
+          "advanced": 1
+        },
+        "advanced": {
+          "simple": 0,
+          "medium": 0,
+          "advanced": 0
+        }
+      }
+    },
+    "efficiency_analysis": {
+      "vs_always_advanced": {
+        "average_efficiency_gain": 0.6608406851097172,
+        "efficiency_gain_std": 0.3607935040874422,
+        "queries_more_efficient": 5,
+        "efficiency_rate": 1.0
+      }
+    },
+    "caching_analysis": {
+      "cache_performance": {
+        "total_requests": 5,
+        "cache_hits": 0,
+        "cache_misses": 5,
+        "hit_rate": 0.0,
+        "miss_rate": 1.0,
+        "cache_saves": 5,
+        "evictions": 0,
+        "similarity_matches": 0,
+        "current_cache_size": 5,
+        "max_cache_size": 1000,
+        "cache_usage": 0.005
+      },
+      "cache_impact_analysis": {
+        "queries_with_cache_hits": 0,
+        "average_time_saved": 0.0,
+        "resource_cost_saved": 0
+      }
+    },
+    "fallback_analysis": {
+      "no_fallbacks_triggered": true
+    },
+    "model_usage_analysis": {
+      "simple": {
+        "count": 2,
+        "avg_processing_time": 0.4418524503707886,
+        "avg_resource_cost": 1.0,
+        "success_rate": 1.0,
+        "usage_percentage": 0.4
+      },
+      "medium": {
+        "count": 2,
+        "avg_processing_time": 1.9006434679031372,
+        "avg_resource_cost": 3.0,
+        "success_rate": 1.0,
+        "usage_percentage": 0.4
+      },
+      "advanced": {
+        "count": 1,
+        "avg_processing_time": 6.3439226150512695,
+        "avg_resource_cost": 10.0,
+        "success_rate": 1.0,
+        "usage_percentage": 0.2
+      }
+    },
+    "recommendations": [
+      "Classification accuracy is 60.00%. Consider adjusting classification criteria.",
+      "Cache hit rate is 0.00%. Consider increasing cache size or adjusting similarity threshold."
+    ]
+  },
+  "detailed_results": [
+    {
+      "query": "What is Python?",
+      "expected_complexity": "simple",
+      "metrics": {
+        "query_length": 15,
+        "expected_complexity": "simple",
+        "recommended_model": "simple",
+        "actual_model_used": "simple",
+        "routing_success": true,
+        "cache_hit": false,
+        "fallback_triggered": false,
+        "processing_time": 0.5251851081848145,
+        "total_time": 0.5291943550109863,
+        "resource_cost": 1,
+        "classification_correct": true,
+        "time_savings_vs_advanced": 7.319320201873779,
+        "cost_savings_vs_advanced": 9,
+        "efficiency_vs_advanced": 0.914529145992907,
+        "time_overhead_vs_simple": -0.1482100486755371,
+        "cost_overhead_vs_simple": 0
+      },
+      "routing_result": {
+        "success": true,
+        "response": "Based on your query about 'What is Python?...', here is a basic answer. This is a simple response from the lightweight model.",
+        "routing_info": {
+          "query": "What is Python?",
+          "recommended_model": "simple",
+          "actual_model_used": "simple",
+          "cache_hit": false,
+          "fallback_triggered": false,
+          "processing_time": 0.5251851081848145,
+          "total_time": 0.5291943550109863,
+          "resource_cost": 1,
+          "classification": {
+            "recommended_model": "simple",
+            "confidence": 1.0,
+            "reasoning": "Recommended simple model. Reasons: Short query (15 chars); Question type: factual; Contains code-related content; Technical domains: programming; Complexity score: 0.40",
+            "complexity_score": 0.39999999999999997,
+            "features": {
+              "length": 15,
+              "word_count": 3,
+              "sentence_count": 1,
+              "punctuation_count": 1,
+              "uppercase_ratio": 0.13333333333333333,
+              "digit_count": 0,
+              "readability_score": 119.19,
+              "grade_level": -2.7,
+              "complexity_keywords": {
+                "simple": 2,
+                "medium": 0,
+                "advanced": 0
+              },
+              "domain_keywords": {
+                "programming": 1
+              },
+              "question_type": "factual",
+              "has_question_mark": true,
+              "has_code_indicators": true,
+              "has_math_indicators": false,
+              "has_technical_terms": false
+            }
+          }
+        },
+        "metadata": {
+          "timestamp": 1758021512.7127485,
+          "system_stats": {
+            "uptime_seconds": 0.5291943550109863,
+            "total_queries": 1,
+            "success_rate": 1.0,
+            "cache_hit_rate": 0.0,
+            "fallback_rate": 0.0
+          }
+        }
+      }
+    },
+    {
+      "query": "How do I create a list in Python?",
+      "expected_complexity": "simple",
+      "metrics": {
+        "query_length": 33,
+        "expected_complexity": "simple",
+        "recommended_model": "medium",
+        "actual_model_used": "medium",
+        "routing_success": true,
+        "cache_hit": false,
+        "fallback_triggered": false,
+        "processing_time": 1.606978178024292,
+        "total_time": 1.6082286834716797,
+        "resource_cost": 3,
+        "classification_correct": false,
+        "time_savings_vs_advanced": 5.8592047691345215,
+        "cost_savings_vs_advanced": 7,
+        "efficiency_vs_advanced": 0.7362344026761898,
+        "time_overhead_vs_simple": 1.0929064750671387,
+        "cost_overhead_vs_simple": 2
+      },
+      "routing_result": {
+        "success": true,
+        "response": "To address your question about 'How do I create a list in Python?...', let me provide a detailed explanation. This medium model can handle moderately complex reasoning and provide structured responses with multiple points and considerations.",
+        "routing_info": {
+          "query": "How do I create a list in Python?",
+          "recommended_model": "medium",
+          "actual_model_used": "medium",
+          "cache_hit": false,
+          "fallback_triggered": false,
+          "processing_time": 1.606978178024292,
+          "total_time": 1.6082286834716797,
+          "resource_cost": 3,
+          "classification": {
+            "recommended_model": "medium",
+            "confidence": 1.0,
+            "reasoning": "Recommended medium model. Reasons: Short query (33 chars); Contains 1 medium complexity keywords; Question type: procedural; Contains code-related content; Technical domains: programming; Complexity score: 0.60",
+            "complexity_score": 0.6000000000000001,
+            "features": {
+              "length": 33,
+              "word_count": 8,
+              "sentence_count": 1,
+              "punctuation_count": 1,
+              "uppercase_ratio": 0.09090909090909091,
+              "digit_count": 0,
+              "readability_score": 105.66,
+              "grade_level": 0.5,
+              "complexity_keywords": {
+                "simple": 1,
+                "medium": 1,
+                "advanced": 0
+              },
+              "domain_keywords": {
+                "programming": 1
+              },
+              "question_type": "procedural",
+              "has_question_mark": true,
+              "has_code_indicators": true,
+              "has_math_indicators": false,
+              "has_technical_terms": false
+            }
+          }
+        },
+        "metadata": {
+          "timestamp": 1758021524.1538677,
+          "system_stats": {
+            "uptime_seconds": 13.050347566604614,
+            "total_queries": 2,
+            "success_rate": 1.0,
+            "cache_hit_rate": 0.0,
+            "fallback_rate": 0.0
+          }
+        }
+      }
+    },
+    {
+      "query": "What is machine learning?",
+      "expected_complexity": "simple",
+      "metrics": {
+        "query_length": 25,
+        "expected_complexity": "simple",
+        "recommended_model": "simple",
+        "actual_model_used": "simple",
+        "routing_success": true,
+        "cache_hit": false,
+        "fallback_triggered": false,
+        "processing_time": 0.3585197925567627,
+        "total_time": 0.36048412322998047,
+        "resource_cost": 1,
+        "classification_correct": true,
+        "time_savings_vs_advanced": 7.955060243606567,
+        "cost_savings_vs_advanced": 9,
+        "efficiency_vs_advanced": 0.9258189938901007,
+        "time_overhead_vs_simple": -0.013754606246948242,
+        "cost_overhead_vs_simple": 0
+      },
+      "routing_result": {
+        "success": true,
+        "response": "Based on your query about 'What is machine learning?...', here is a basic answer. This is a simple response from the lightweight model.",
+        "routing_info": {
+          "query": "What is machine learning?",
+          "recommended_model": "simple",
+          "actual_model_used": "simple",
+          "cache_hit": false,
+          "fallback_triggered": false,
+          "processing_time": 0.3585197925567627,
+          "total_time": 0.36048412322998047,
+          "resource_cost": 1,
+          "classification": {
+            "recommended_model": "simple",
+            "confidence": 0.9999999999999999,
+            "reasoning": "Recommended simple model. Reasons: Short query (25 chars); Question type: factual; Complexity score: 0.25",
+            "complexity_score": 0.25,
+            "features": {
+              "length": 25,
+              "word_count": 4,
+              "sentence_count": 1,
+              "punctuation_count": 1,
+              "uppercase_ratio": 0.04,
+              "digit_count": 0,
+              "readability_score": 75.88,
+              "grade_level": 3.7,
+              "complexity_keywords": {
+                "simple": 2,
+                "medium": 0,
+                "advanced": 0
+              },
+              "domain_keywords": {},
+              "question_type": "factual",
+              "has_question_mark": true,
+              "has_code_indicators": false,
+              "has_math_indicators": false,
+              "has_technical_terms": false
+            }
+          }
+        },
+        "metadata": {
+          "timestamp": 1758021535.6578548,
+          "system_stats": {
+            "uptime_seconds": 23.30659008026123,
+            "total_queries": 3,
+            "success_rate": 1.0,
+            "cache_hit_rate": 0.0,
+            "fallback_rate": 0.0
+          }
+        }
+      }
+    },
+    {
+      "query": "Explain how neural networks work",
+      "expected_complexity": "medium",
+      "metrics": {
+        "query_length": 32,
+        "expected_complexity": "medium",
+        "recommended_model": "medium",
+        "actual_model_used": "medium",
+        "routing_success": true,
+        "cache_hit": false,
+        "fallback_triggered": false,
+        "processing_time": 2.1943087577819824,
+        "total_time": 2.195436716079712,
+        "resource_cost": 3,
+        "classification_correct": true,
+        "time_savings_vs_advanced": 4.200204849243164,
+        "cost_savings_vs_advanced": 7,
+        "efficiency_vs_advanced": 0.6831678644277565,
+        "time_overhead_vs_simple": 1.663404941558838,
+        "cost_overhead_vs_simple": 2
+      },
+      "routing_result": {
+        "success": true,
+        "response": "To address your question about 'Explain how neural networks work...', let me provide a detailed explanation. This medium model can handle moderately complex reasoning and provide structured responses with multiple points and considerations.",
+        "routing_info": {
+          "query": "Explain how neural networks work",
+          "recommended_model": "medium",
+          "actual_model_used": "medium",
+          "cache_hit": false,
+          "fallback_triggered": false,
+          "processing_time": 2.1943087577819824,
+          "total_time": 2.195436716079712,
+          "resource_cost": 3,
+          "classification": {
+            "recommended_model": "medium",
+            "confidence": 0.7,
+            "reasoning": "Recommended medium model. Reasons: Short query (32 chars); Contains 2 medium complexity keywords; Question type: procedural; Complexity score: 0.50",
+            "complexity_score": 0.5000000000000001,
+            "features": {
+              "length": 32,
+              "word_count": 5,
+              "sentence_count": 1,
+              "punctuation_count": 0,
+              "uppercase_ratio": 0.03125,
+              "digit_count": 0,
+              "readability_score": 66.4,
+              "grade_level": 5.2,
+              "complexity_keywords": {
+                "simple": 0,
+                "medium": 2,
+                "advanced": 0
+              },
+              "domain_keywords": {},
+              "question_type": "procedural",
+              "has_question_mark": false,
+              "has_code_indicators": false,
+              "has_math_indicators": false,
+              "has_technical_terms": true
+            }
+          }
+        },
+        "metadata": {
+          "timestamp": 1758021546.792549,
+          "system_stats": {
+            "uptime_seconds": 36.27623677253723,
+            "total_queries": 4,
+            "success_rate": 1.0,
+            "cache_hit_rate": 0.0,
+            "fallback_rate": 0.0
+          }
+        }
+      }
+    },
+    {
+      "query": "How do I implement a binary search algorithm in Python?",
+      "expected_complexity": "medium",
+      "metrics": {
+        "query_length": 55,
+        "expected_complexity": "medium",
+        "recommended_model": "advanced",
+        "actual_model_used": "advanced",
+        "routing_success": true,
+        "cache_hit": false,
+        "fallback_triggered": false,
+        "processing_time": 6.3439226150512695,
+        "total_time": 6.345031499862671,
+        "resource_cost": 10,
+        "classification_correct": false,
+        "time_savings_vs_advanced": 0.7603359222412109,
+        "cost_savings_vs_advanced": 0,
+        "efficiency_vs_advanced": 0.04445301856163175,
+        "time_overhead_vs_simple": 5.674589395523071,
+        "cost_overhead_vs_simple": 9
+      },
+      "routing_result": {
+        "success": true,
+        "response": "For the complex problem 'How do I implement a binary search algorithm in Py...', I'll provide a sophisticated solution. This advanced model can handle intricate logical reasoning, algorithm design, strategic planning, and complex problem-solving with high accuracy and detailed step-by-step analysis.",
+        "routing_info": {
+          "query": "How do I implement a binary search algorithm in Python?",
+          "recommended_model": "advanced",
+          "actual_model_used": "advanced",
+          "cache_hit": false,
+          "fallback_triggered": false,
+          "processing_time": 6.3439226150512695,
+          "total_time": 6.345031499862671,
+          "resource_cost": 10,
+          "classification": {
+            "recommended_model": "advanced",
+            "confidence": 1.0,
+            "reasoning": "Recommended advanced model. Reasons: Contains 1 advanced keywords; Question type: procedural; Contains code-related content; Technical domains: programming; Complexity score: 0.85",
+            "complexity_score": 0.8500000000000001,
+            "features": {
+              "length": 55,
+              "word_count": 10,
+              "sentence_count": 1,
+              "punctuation_count": 1,
+              "uppercase_ratio": 0.05454545454545454,
+              "digit_count": 0,
+              "readability_score": 61.33,
+              "grade_level": 7.2,
+              "complexity_keywords": {
+                "simple": 0,
+                "medium": 1,
+                "advanced": 1
+              },
+              "domain_keywords": {
+                "programming": 2
+              },
+              "question_type": "procedural",
+              "has_question_mark": true,
+              "has_code_indicators": true,
+              "has_math_indicators": false,
+              "has_technical_terms": true
+            }
+          }
+        },
+        "metadata": {
+          "timestamp": 1758021557.6333706,
+          "system_stats": {
+            "uptime_seconds": 51.266653299331665,
+            "total_queries": 5,
+            "success_rate": 1.0,
+            "cache_hit_rate": 0.0,
+            "fallback_rate": 0.0
+          }
+        }
+      }
+    }
+  ],
+  "system_configuration": {
+    "models": [
+      "simple",
+      "medium",
+      "advanced"
+    ],
+    "model_configs": {
+      "simple": {
+        "name": "Simple Model",
+        "max_tokens": 150,
+        "response_time": 0.5,
+        "resource_cost": 1,
+        "accuracy_score": 0.7,
+        "description": "Fast and lightweight model for simple queries"
+      },
+      "medium": {
+        "name": "Medium Model",
+        "max_tokens": 500,
+        "response_time": 2.0,
+        "resource_cost": 3,
+        "accuracy_score": 0.85,
+        "description": "Balanced model for moderately complex queries"
+      },
+      "advanced": {
+        "name": "Advanced Model",
+        "max_tokens": 2000,
+        "response_time": 8.0,
+        "resource_cost": 10,
+        "accuracy_score": 0.95,
+        "description": "High-capability model for complex analysis and reasoning"
+      }
+    }
+  }
+}
