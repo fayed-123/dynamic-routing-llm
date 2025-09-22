@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Routing System</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f4f7f9; color: #333; display: flex; justify-content: center; padding-top: 40px; min-height: 100vh; margin: 0; }
+        .container { width: 100%; max-width: 800px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.1); padding: 40px; box-sizing: border-box; margin-bottom: 40px; }
+        h1, h3 { text-align: center; color: #1a253c; }
+        h3 { border-bottom: 2px solid #007bff; padding-bottom: 10px; margin-top: 40px; }
+        textarea { width: 100%; padding: 15px; font-size: 16px; border-radius: 8px; border: 1px solid #ccc; box-sizing: border-box; resize: vertical; min-height: 80px; }
+        button { display: block; width: 100%; padding: 15px; font-size: 18px; font-weight: bold; color: #fff; background-color: #007bff; border: none; border-radius: 8px; cursor: pointer; margin-top: 20px; transition: background-color 0.3s; }
+        button:hover { background-color: #0056b3; }
+        .admin-actions { text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+        .admin-actions a { text-decoration: none; display: inline-block; padding: 10px 20px; background-color: #6c757d; color: white; border-radius: 8px; margin-top: 10px; transition: background-color 0.3s; }
+        .admin-actions a:hover { background-color: #5a6268; }
+        .results-section { margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; }
+        .response-box, .info-box { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-top: 15px; white-space: pre-wrap; }
+        .details-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 15px; margin-top: 20px; text-align: center;}
+        .detail-item { background-color: #f0f2f5; padding: 15px; border-radius: 8px; }
+        .detail-item strong { display: block; margin-bottom: 5px; color: #555; font-size: 14px; }
+        .info-box p { margin: 8px 0; font-size: 16px; }
+        .info-box strong { color: #0056b3; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>🤖 Dynamic Routing System</h1>
+
+    <form action="/" method="POST">
+        <textarea name="query" placeholder="Enter your query here..." required>{{ query or '' }}</textarea>
+        <button type="submit">Process Query</button>
+    </form>
+
+    <div class="admin-actions">
+        <a href="/run_evaluation">Run Quick Evaluation</a>
+        <a href="/show/stats">Show Stats</a>
+        <a href="/show/cache">Show Cache Info</a>
+        <a href="/show/help">Help</a>
+    </div>
+
+    {% if result %}
+    <div class="results-section">
+        <h3>📄 Response</h3>
+        <div class="response-box">{{ result.response }}</div>
+
+        <h3>📊 Routing Details</h3>
+        <div class="details-grid">
+            <div class="detail-item">
+                <strong>Model Used</strong>
+                <span>{{ result.routing_info.get('actual_model_used', 'N/A') }}</span>
+            </div>
+            <div class="detail-item">
+                <strong>Cache Hit</strong>
+                <span>{{ 'Yes' if result.routing_info.get('cache_hit') else 'No' }}</span>
+            </div>
+            <div class="detail-item">
+                <strong>Processing Time</strong>
+                <span>{{ "%.3f"|format(result.routing_info.get('processing_time', 0)) }}s</span>
+            </div>
+            <div class="detail-item">
+                <strong>Resource Cost</strong>
+                <span>{{ result.routing_info.get('resource_cost', 'N/A') }}</span>
+            </div>
+            {% if result.routing_info.get('classification') %}
+            <div class="detail-item">
+                <strong>Recommended Model</strong>
+                <span>{{ result.routing_info.classification.get('recommended_model', 'N/A') }}</span>
+            </div>
+            <div class="detail-item">
+                <strong>Confidence</strong>
+                <span>{{ "%.2f"|format(result.routing_info.classification.get('confidence', 0)) }}</span>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if evaluation_summary %}
+    <div class="results-section">
+        <h3>📊 Evaluation Summary</h3>
+        <div class="info-box">
+            {% for key, value in evaluation_summary.evaluation_summary.items() %}
+            <p><strong>{{ key.replace('_', ' ').title() }}:</strong>
+                {% if 'rate' in key or 'accuracy' in key %}
+                {{ "%.2f"|format(value * 100) }}%
+                {% elif value is number and value is not integer %}
+                {{ "%.3f"|format(value) }}
+                {% else %}
+                {{ value }}
+                {% endif %}
+            </p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if stats_data %}
+    <div class="results-section">
+        <h3>📈 System Statistics</h3>
+        <div class="info-box">
+            <p><strong>Total Queries:</strong> {{ stats_data.system.total_queries }}</p>
+            <p><strong>Successful Queries:</strong> {{ stats_data.system.successful_queries }}</p>
+            <p><strong>Cache Hits:</strong> {{ stats_data.cache.cache_hits }}</p>
+            <hr>
+            <p><strong>Model Usage:</strong></p>
+            <ul>
+                {% for model, count in stats_data.system.model_usage.items() %}
+                <li><strong>{{ model.title() }}:</strong> {{ count }} times</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if cache_data %}
+    <div class="results-section">
+        <h3>💾 Cache Information</h3>
+        <div class="info-box">
+            <p><strong>Total Entries:</strong> {{ cache_data.total_entries }}</p>
+            <p><strong>Max Size:</strong> {{ cache_data.config.max_size }}</p>
+            <hr>
+            <p><strong>Most Accessed Entries:</strong></p>
+            <ul>
+                {% for entry in cache_data.entries[:5] %}
+                <li>'{{ entry.query[:40] }}...' (Accessed {{ entry.access_count }} times)</li>
+                {% else %}
+                <li>No entries in cache yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+
+    {% if help_data %}
+    <div class="results-section">
+        <h3>❓ Help</h3>
+        <div class="info-box">
+            {% for command, description in help_data['Available Commands'].items() %}
+            <p><strong>{{ command }}:</strong> {{ description }}</p>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+</body>
+</html>

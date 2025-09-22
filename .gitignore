@@ -1,0 +1,21 @@
+# Virtual Environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files (VSCode, IntelliJ)
+.vscode/
+.idea/
+
+# Generated files
+cache_data.json
+routing_logs.txt
+*.png
+*.json
+
+# Operating System files
+.DS_Store
+Thumbs.db
