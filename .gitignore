@@ -6,11 +6,10 @@ venv/
 __pycache__/
 *.pyc
 
-# IDE files (VSCode, IntelliJ)
-.vscode/
+# IDE files (IntelliJ)
 .idea/
 
-# Generated files
+# Generated files by the application
 cache_data.json
 routing_logs.txt
 *.png
