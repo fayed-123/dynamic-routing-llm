@@ -1,0 +1,18 @@
+# Python cache
+__pycache__/
+*.pyc
+
+# Virtual environment
+.venv/
+
+# IntelliJ / PyCharm settings
+.idea/
+
+# Logs and system files
+*.log
+*.tmp
+
+# Generated outputs
+*.json
+*.png
+*.txt
