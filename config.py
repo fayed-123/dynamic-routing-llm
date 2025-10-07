@@ -1,15 +1,12 @@
-"""
-Dynamic Routing System Configuration
-Settings and parameters for the LLM routing system
-"""
+# config.py
 
-# Model configurations for different capability levels
+# --- Model Configurations ---
 MODEL_CONFIGS = {
     'simple': {
         'name': 'Simple Model',
         'max_tokens': 150,
-        'response_time': 0.5,  # seconds
-        'resource_cost': 1,    # cost points
+        'response_time': 0.5,
+        'resource_cost': 1,
         'accuracy_score': 0.7,
         'description': 'Fast and lightweight model for simple queries'
     },
@@ -31,50 +28,38 @@ MODEL_CONFIGS = {
     }
 }
 
-# Query classification criteria
+# --- Query Classification Criteria ---
 CLASSIFICATION_CRITERIA = {
     'query_length_thresholds': {
-        'simple': 50,      # less than 50 characters
-        'medium': 200,     # 50-200 characters
-        'advanced': 1000   # more than 200 characters
+        'simple': 50,
+        'medium': 200,
+        'advanced': 1000
     },
-
     'complexity_keywords': {
-        'simple': [
-            'what', 'who', 'when', 'where', 'yes', 'no', 'is', 'are',
-            'define', 'meaning', 'simple', 'basic'
-        ],
-        'medium': [
-            'how', 'why', 'explain', 'compare', 'difference', 'between',
-            'describe', 'steps', 'process', 'method'
-        ],
-        'advanced': [
-            'analyze', 'evaluate', 'design', 'algorithm', 'strategy',
-            'research', 'complex', 'detailed', 'comprehensive', 'optimize'
-        ]
+        'simple': ['what', 'who', 'when', 'where', 'define', 'meaning'],
+        'medium': ['how', 'why', 'explain', 'compare', 'describe', 'steps'],
+        'advanced': ['analyze', 'evaluate', 'design', 'algorithm', 'optimize']
     },
-
     'technical_domains': {
-        'programming': ['code', 'python', 'java', 'algorithm', 'debug', 'function'],
-        'mathematics': ['equation', 'calculate', 'math', 'formula', 'solve'],
-        'science': ['research', 'analysis', 'study', 'experiment', 'hypothesis'],
-        'creative': ['write', 'story', 'poem', 'creative', 'generate', 'compose']
+        'programming': ['code', 'python', 'java', 'algorithm', 'debug'],
+        'mathematics': ['equation', 'calculate', 'math', 'formula'],
+        'science': ['research', 'analysis', 'experiment', 'hypothesis']
     }
 }
 
-# Caching system settings
+# --- Caching System Settings ---
 CACHE_SETTINGS = {
     'enabled': True,
-    'max_size': 1000,           # maximum number of cached queries
-    'ttl_seconds': 3600,        # time to live in seconds (1 hour)
-    'similarity_threshold': 0.8  # similarity threshold for similar queries
+    'max_size': 1000,
+    'ttl_seconds': 3600,
+    'similarity_threshold': 0.8
 }
 
-# Fallback strategy settings
+# --- Fallback Strategy Settings ---
 FALLBACK_SETTINGS = {
-    'max_retries': 3,
-    'retry_delay': 1.0,  # seconds
-    'escalation_strategy': 'step_up',  # 'step_up' or 'direct_to_advanced'
+    'max_retries': 2,
+    'retry_delay': 1.0,
+    'escalation_strategy': 'step_up',
     'timeout_thresholds': {
         'simple': 2.0,
         'medium': 5.0,
@@ -82,72 +67,38 @@ FALLBACK_SETTINGS = {
     }
 }
 
-# Evaluation and monitoring settings
-EVALUATION_SETTINGS = {
-    'log_all_queries': True,
-    'performance_metrics': ['response_time', 'accuracy', 'resource_cost'],
-    'save_results_to_file': True,
-    'results_file_path': 'evaluation_results.json'
-}
-
-# General system settings
+# --- General System Settings ---
 GENERAL_SETTINGS = {
     'default_model': 'medium',
     'verbose_logging': True,
-    'debug_mode': False,
-    'language': 'en'
+    'debug_mode': False
 }
 
-# File paths configuration
+# --- File Paths Configuration ---
 FILE_PATHS = {
     'cache_file': 'cache_data.json',
     'logs_file': 'routing_logs.txt',
-    'test_queries_file': 'test_queries.json',
-    'results_file': 'evaluation_results.json'
+    'test_queries_file': 'test_queries.json'
 }
 
-# System messages and notifications
-MESSAGES = {
-    'model_selected': 'Model selected: {}',
-    'fallback_triggered': 'Fallback strategy triggered',
-    'cache_hit': 'Cache hit found',
-    'cache_miss': 'Cache miss - processing new query',
-    'processing_query': 'Processing query...',
-    'error_occurred': 'Error occurred: {}',
-    'timeout_exceeded': 'Timeout exceeded for model: {}',
-    'escalating_model': 'Escalating to higher model: {}',
-    'query_completed': 'Query completed successfully'
-}
-
-# Helper functions for configuration access
+# --- Helper functions for configuration access ---
 def get_model_config(model_name):
-    """Get configuration for a specific model"""
     return MODEL_CONFIGS.get(model_name, MODEL_CONFIGS['medium'])
 
-def get_message(key):
-    """Get system message by key"""
-    return MESSAGES.get(key, key)
-
 def is_debug_mode():
-    """Check if debug mode is enabled"""
     return GENERAL_SETTINGS.get('debug_mode', False)
 
 def get_cache_config():
-    """Get caching configuration"""
     return CACHE_SETTINGS
 
 def get_fallback_config():
-    """Get fallback strategy configuration"""
     return FALLBACK_SETTINGS
 
 def get_classification_criteria():
-    """Get query classification criteria"""
     return CLASSIFICATION_CRITERIA
 
 def get_all_model_names():
-    """Get list of all available model names"""
     return list(MODEL_CONFIGS.keys())
 
 def get_default_model():
-    """Get the default model name"""
     return GENERAL_SETTINGS.get('default_model', 'medium')

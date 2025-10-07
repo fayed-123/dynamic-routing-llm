@@ -81,9 +81,9 @@
     <div class="results-section">
         <h3>📊 Evaluation Summary</h3>
         <div class="info-box">
-            {% for key, value in evaluation_summary.evaluation_summary.items() %}
+            {% for key, value in evaluation_summary.items() %}
             <p><strong>{{ key.replace('_', ' ').title() }}:</strong>
-                {% if 'rate' in key or 'accuracy' in key %}
+                {% if 'rate' in key or 'accuracy' in key and value is not none %}
                 {{ "%.2f"|format(value * 100) }}%
                 {% elif value is number and value is not integer %}
                 {{ "%.3f"|format(value) }}
@@ -137,7 +137,7 @@
     <div class="results-section">
         <h3>❓ Help</h3>
         <div class="info-box">
-            {% for command, description in help_data['Available Commands'].items() %}
+            {% for command, description in help_data['Available Actions'].items() %}
             <p><strong>{{ command }}:</strong> {{ description }}</p>
             {% endfor %}
         </div>

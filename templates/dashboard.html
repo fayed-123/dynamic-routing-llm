@@ -7,7 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body { font-family: sans-serif; background-color: #f0f2f5; color: #333; }
-        .dashboard-container { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; padding: 30px; max-width: 1200px; margin: auto; }
+        .dashboard-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 30px; padding: 30px; max-width: 1200px; margin: auto; }
         .chart-card { background-color: white; padding: 20px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
         h1 { text-align: center; color: #1a253c; }
         h2 { text-align: center; margin-top: 0; color: #444; }
@@ -27,61 +27,64 @@
 </div>
 
 <script>
-    // --- 3. كود JavaScript الذي يجعل اللوحة حية ---
-
-    // الحصول على عناصر الـ canvas
+    // Get the canvas elements where the charts will be drawn.
     const modelCtx = document.getElementById('modelUsageChart').getContext('2d');
     const cacheCtx = document.getElementById('cacheChart').getContext('2d');
 
-    // إنشاء الرسوم البيانية الأولية ببيانات فارغة
+    // Initialize the model usage chart (doughnut type) with empty data.
     const modelUsageChart = new Chart(modelCtx, {
-        type: 'doughnut', // نوع الرسم البياني: دائري
+        type: 'doughnut',
         data: {
             labels: ['Simple', 'Medium', 'Advanced'],
             datasets: [{
-                label: 'Model Usage',
-                data: [0, 0, 0], // بيانات أولية
+                label: 'Model Usage Count',
+                data: [0, 0, 0],
                 backgroundColor: ['#4caf50', '#ffc107', '#f44336'],
             }]
         }
     });
 
+    // Initialize the cache performance chart (bar type) with empty data.
     const cacheChart = new Chart(cacheCtx, {
-        type: 'bar', // نوع الرسم البياني: أعمدة
+        type: 'bar',
         data: {
             labels: ['Cache Hits', 'Cache Misses'],
             datasets: [{
-                label: 'Cache Performance',
-                data: [0, 0], // بيانات أولية
+                label: 'Cache Performance Count',
+                data: [0, 0],
                 backgroundColor: ['#2196f3', '#e0e0e0'],
             }]
         },
         options: { scales: { y: { beginAtZero: true } } }
     });
 
-    // هذه الدالة هي قلب اللوحة الحية
+    // This async function fetches new data from the API and updates the charts.
     async function updateDashboard() {
         try {
-            // طلب أحدث الإحصائيات من الخادم
+            // Fetch the latest stats from our /api/stats endpoint.
             const response = await fetch('/api/stats');
             const stats = await response.json();
 
-            // --- تحديث بيانات الرسم البياني الأول (Model Usage) ---
-            const modelUsageData = stats.system.model_usage;
-            modelUsageChart.data.datasets[0].data = [
-                modelUsageData.simple,
-                modelUsageData.medium,
-                modelUsageData.advanced
-            ];
-            modelUsageChart.update(); // تحديث الرسم البياني
+            // Update the Model Usage chart data if the data is valid.
+            if (stats && stats.system && stats.system.model_usage) {
+                const modelUsageData = stats.system.model_usage;
+                modelUsageChart.data.datasets[0].data = [
+                    modelUsageData.simple || 0,
+                    modelUsageData.medium || 0,
+                    modelUsageData.advanced || 0
+                ];
+                modelUsageChart.update();
+            }
 
-            // --- تحديث بيانات الرسم البياني الثاني (Cache Performance) ---
-            const cacheData = stats.cache;
-            cacheChart.data.datasets[0].data = [
-                cacheData.cache_hits,
-                cacheData.cache_misses
-            ];
-            cacheChart.update(); // تحديث الرسم البياني
+            // Update the Cache Performance chart data if the data is valid.
+            if (stats && stats.cache) {
+                const cacheData = stats.cache;
+                cacheChart.data.datasets[0].data = [
+                    cacheData.cache_hits || 0,
+                    cacheData.cache_misses || 0
+                ];
+                cacheChart.update();
+            }
 
             console.log("Dashboard updated successfully!");
 
@@ -90,12 +93,12 @@
         }
     }
 
-    // --- التشغيل ---
-    // استدعاء الدالة مرة واحدة عند تحميل الصفحة
+    // --- Run the update logic ---
+    // 1. Update the dashboard immediately when the page loads.
     updateDashboard();
 
-    // ثم، قم باستدعاء الدالة كل 5 ثوانٍ لتحديث البيانات تلقائيًا
-    setInterval(updateDashboard, 5000); // 5000_ms = 5 seconds
+    // 2. Set an interval to update it automatically every 5 seconds.
+    setInterval(updateDashboard, 5000);
 
 </script>
 </body>
