@@ -1,4 +1,3 @@
-# cache_manager.py
 
 import json
 import time
@@ -18,21 +17,17 @@ class CacheEntry:
         self.query_hash = hashlib.md5(query.lower().strip().encode()).hexdigest()
 
     def is_expired(self, ttl_seconds: int) -> bool:
-        """Checks if the cache entry is older than the Time-To-Live."""
         return (time.time() - self.timestamp) > ttl_seconds
 
     def update_access(self):
-        """Updates the access timestamp and counter."""
         self.access_count += 1
         self.last_accessed = time.time()
 
     def to_dict(self) -> Dict:
-        """Serializes the entry to a dictionary."""
         return self.__dict__
 
     @classmethod
     def from_dict(cls, data: Dict) -> 'CacheEntry':
-        """Creates an entry from a dictionary."""
         entry = cls.__new__(cls)
         entry.__dict__.update(data)
         return entry
@@ -57,15 +52,20 @@ class CacheManager:
 
         query_hash = hashlib.md5(query.lower().strip().encode()).hexdigest()
 
-        # 1. Try for an exact match
         if query_hash in self.cache:
             entry = self.cache[query_hash]
             if not entry.is_expired(self.config['ttl_seconds']):
                 entry.update_access()
                 self.stats['cache_hits'] += 1
-                return {'result': entry.result, 'model_used': entry.model_used, 'cache_hit': True, 'similarity_match': False}
+                return {
+                    'result': entry.result,
+                    'model_used': entry.model_used,
+                    'cached_at': entry.timestamp,
+                    'access_count': entry.access_count,
+                    'cache_hit': True,
+                    'similarity_match': False
+                }
 
-        # 2. Try for a similarity match
         similar_result = self._find_similar_query(query)
         if similar_result:
             self.stats['cache_hits'] += 1
@@ -85,8 +85,15 @@ class CacheManager:
         self.cache[query_hash] = CacheEntry(query, result, model_used)
         self.stats['cache_saves'] += 1
 
+    def clear_cache(self) -> int:
+        """
+        Clears all items from the in-memory cache and returns the number of items removed.
+        """
+        cleared_count = len(self.cache)
+        self.cache.clear()
+        return cleared_count
+
     def _find_similar_query(self, query: str) -> Optional[Dict]:
-        """Finds the best match above the similarity threshold."""
         best_match, best_similarity = None, 0.0
         for entry in self.cache.values():
             if entry.is_expired(self.config['ttl_seconds']): continue
@@ -99,14 +106,18 @@ class CacheManager:
         if best_match:
             best_match.update_access()
             return {
-                'result': best_match.result, 'model_used': best_match.model_used,
-                'cache_hit': True, 'similarity_match': True,
-                'similarity_score': best_similarity
+                'result': best_match.result,
+                'model_used': best_match.model_used,
+                'cached_at': best_match.timestamp,
+                'access_count': best_match.access_count,
+                'cache_hit': True,
+                'similarity_match': True,
+                'similarity_score': best_similarity,
+                'original_query': best_match.query
             }
         return None
 
     def _calculate_similarity(self, query1: str, query2: str) -> float:
-        """Calculates Jaccard similarity between two query texts."""
         words1 = set(query1.lower().split())
         words2 = set(query2.lower().split())
         if not words1 or not words2: return 0.0
@@ -116,14 +127,12 @@ class CacheManager:
         return intersection / union
 
     def _evict_lru_entry(self):
-        """Removes the least recently used entry."""
         if not self.cache: return
         oldest_hash = min(self.cache, key=lambda h: self.cache[h].last_accessed)
         del self.cache[oldest_hash]
         self.stats['evictions'] += 1
 
     def save_cache_to_file(self):
-        """Saves the current cache state to a JSON file."""
         try:
             with open(FILE_PATHS['cache_file'], 'w', encoding='utf-8') as f:
                 json.dump({h: e.to_dict() for h, e in self.cache.items()}, f, indent=2)
@@ -131,7 +140,6 @@ class CacheManager:
             print(f"Error saving cache to file: {e}")
 
     def _load_cache_from_file(self):
-        """Loads the cache state from a JSON file on startup."""
         try:
             with open(FILE_PATHS['cache_file'], 'r', encoding='utf-8') as f:
                 data = json.load(f)
@@ -140,10 +148,9 @@ class CacheManager:
                 if not entry.is_expired(self.config['ttl_seconds']):
                     self.cache[key] = entry
         except (FileNotFoundError, json.JSONDecodeError):
-            pass # No cache file exists or it's invalid, start fresh.
+            pass
 
     def get_stats(self) -> Dict:
-        """Returns cache performance statistics."""
         total = max(self.stats['total_requests'], 1)
         stats_copy = self.stats.copy()
         stats_copy['hit_rate'] = stats_copy['cache_hits'] / total
@@ -151,7 +158,6 @@ class CacheManager:
         return stats_copy
 
     def get_cache_info(self) -> Dict:
-        """Returns detailed info about top cached entries."""
         sorted_entries = sorted(self.cache.values(), key=lambda e: e.access_count, reverse=True)
         return {
             'total_entries': len(self.cache),
@@ -160,5 +166,4 @@ class CacheManager:
         }
 
     def __del__(self):
-        """Ensures cache is saved when the application exits."""
         self.save_cache_to_file()
